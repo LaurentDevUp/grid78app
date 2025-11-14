@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { supabase } from '@/lib/supabase/client'
 import { z } from 'zod'
+import { branding } from '@/lib/config/branding'
 
 const signupSchema = z.object({
   email: z.string().email('Email invalide'),
@@ -27,6 +29,7 @@ type SignupFormData = z.infer<typeof signupSchema>
 
 export default function SignupPage() {
   const router = useRouter()
+  const { logo, showLogo, alt } = branding
 
   const [formData, setFormData] = useState<SignupFormData>({
     email: '',
@@ -117,7 +120,19 @@ export default function SignupPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-grid-cyan-50 to-white px-4 py-12">
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
-        <div className="text-center">
+        <div className="text-center space-y-3">
+          {showLogo && (
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-white shadow-xl ring-1 ring-grid-cyan-100">
+              <Image
+                src={logo}
+                alt={alt}
+                width={64}
+                height={64}
+                className="h-16 w-16 object-contain"
+                priority
+              />
+            </div>
+          )}
           <h1 className="text-4xl font-bold text-grid-navy-600">GRID 78</h1>
           <h2 className="mt-2 text-2xl font-semibold text-grid-navy-500">
             Créer un compte
